@@ -1,14 +1,23 @@
-
-//Implementing tree data structure
+/**Implemented tree data structure
+ * public data member: root
+ * public method: poplulateTree(int [] data) creates tree from data array  
+ */
 public class Tree{
 	static final int NullNode = Integer.MIN_VALUE;
-	int data;
 	Node<Integer> root = null;
 	
 	public Tree(){
 		this.root = null;
 	}
 	
+	/** populateTree(): Creates tree from data array
+	 * 
+	 * @param data
+	 * 
+	 * For each index i of the array, 
+	 * 		the data at index (2*i + 1) is the left child
+	 * 		the data at index (2*i + 2) is the right child
+	 */
 	public void populateTree(int data[]){
 		if(data == null || data.length == 0){
 			return;
@@ -18,7 +27,7 @@ public class Tree{
 		createTree(this.root, 0, data);				
 	}
 	
-	void createTree(Node<Integer> root, int n, int data[]){
+	private void createTree(Node<Integer> root, int n, int data[]){
 		int leftN = 2*n + 1;
 		int rightN = leftN + 1;
 		if(leftN >= data.length){
@@ -57,36 +66,42 @@ public class Tree{
 		}		
 	}
 	
-	public void printTree(){
+	@Override
+	public String toString(){
+		StringBuilder str = new StringBuilder();
 		if(this.root == null){
-			System.out.println("Empty Tree");
+			str.append("Empty Tree");
+			return str.toString();
 		}
 		else{
-			System.out.println("Printing tree(DFS)...");
-			print(this.root);
+			str.append("Printing tree(DFS)...\n");
+			str.append(print(root));
+			return str.toString();
 		}		
 	}
 	
-	void print(Node<Integer> root){
+	private StringBuilder print(Node<Integer> root){
+		StringBuilder str = new StringBuilder();
 		if(root == null){
-			return;
+			return str;
 		}
 		
-		System.out.print("Node: "+root.data+" ");
+		str.append("Node: "+root.data+" ");
 		if(root.left != null){
-			System.out.print("Left: "+root.left.data+" ");
+			str.append("Left: "+root.left.data+" ");
 		}
 		else{
-			System.out.print("Left: null ");
+			str.append("Left: null ");
 		}
 		if(root.right !=null){
-			System.out.print("Right: "+root.right.data+" ");
+			str.append("Right: "+root.right.data+" ");
 		}
 		else{
-			System.out.print("Right: null ");
+			str.append("Right: null ");
 		}
-		System.out.println();
-		print(root.left);
-		print(root.right);				
+		str.append("\n");
+		str.append(print(root.left));
+		str.append(print(root.right));		
+		return str;
 	}
 }
