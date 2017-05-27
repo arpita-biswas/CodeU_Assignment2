@@ -1,4 +1,14 @@
+/** Assignment 2 Question 2: Find lowest common ancestor of two elements in a binary tree
+ */
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+/** An object of Result class contains
+ * a "potentialAncestor" tree node: contain either p or q (or both) in its subtree
+ * a boolean field "isAncestor": whether the potentialAncestor is the lowest common ancestor of p and q 
+ */
 class Result{
 	Node<Integer> potentialAncestor = null;
 	boolean isAncestor = false;
@@ -15,20 +25,34 @@ class Result{
 
 public class Q2 {	
 	
-	public static void findCommonAncestor(Tree t, int p, int q){
-		if(t == null || t.root == null){
-			return;
+	/** findCommonAncestor(): finds lowest common ancestor of p and q in binary tree t
+	 * 
+	 * @param t
+	 * @param p
+	 * @param q
+	 */
+	public static String findCommonAncestor(Tree t, int p, int q){
+		StringBuilder str = new StringBuilder();
+		if(t == null){
+			str.append("Tree not initiated");
+			return str.toString();
 		}
-		Result res = commonAncestor(t.root, p, q);
+		if(t.root == null){
+			str.append("Empty tree");
+			return str.toString();
+		}
+		Result res = commonAncestorHelper(t.root, p, q);
 		if( res.potentialAncestor != null && res.isAncestor == true){
-			System.out.println("Common Ancestor of "+p+" and "+q+" is "+res.potentialAncestor.data);
+			str.append("Lowest Common Ancestor of "+p+" and "+q+" is "+res.potentialAncestor.data);
+			return str.toString();
 		}
 		else{
-			System.out.println("There exist no common ancestor of "+p+" and "+q);
+			str.append("Either "+p+" or "+q+" is not present");
+			return str.toString();
 		}
 	}
 	
-	static Result commonAncestor(Node<Integer> root, int p, int q){
+	static Result commonAncestorHelper(Node<Integer> root, int p, int q){
 				
 		//if root is null, then return null node as potentialAncestor with isAncestor = false
 		if(root == null){
@@ -57,7 +81,7 @@ public class Q2 {
 		}
 		
 		//If root does not contain p or q, look at the left subtree for p or q
-		Result leftRes = commonAncestor(root.left, p, q);
+		Result leftRes = commonAncestorHelper(root.left, p, q);
 		
 		//Check whether left subtree has already found the common ancestor
 		if(leftRes.isAncestor){//If yes, return the common ancestor obtained from left subtree
@@ -65,7 +89,7 @@ public class Q2 {
 		}
 
 		//If common ancestor id not yet found in left subtree, look at right subtree for p or q
-		Result rightRes = commonAncestor(root.right, p, q);
+		Result rightRes = commonAncestorHelper(root.right, p, q);
 		//Check whether right subtree has already found the common ancestor
 		if(rightRes.isAncestor){//If yes, return the common ancestor obtained from right subtree
 			return rightRes;
@@ -100,11 +124,86 @@ public class Q2 {
 	}
 	
 	public static void main(String[] args) {
+		
+		//Tests
+		testNullTree(); //When (t == null)
+		testEmptyTree(); //When (t.root == null)
+		testElementsNotPresent(); //When p, q or both not present in the tree
+		testSamePQ(); //When p and q 
+		testP_ancestorOf_Q(); //When p is one of the ancestors of q
+		testQ_ancestorOf_P(); //When q is one of the ancestors of p
+		testNonPQ_CommonAncestor();
+
+	}
+	
+	@Test
+	public static void testNullTree() {
+		Tree t = null;
+		int p=5, q=14;
+	    assertEquals("Should return: Tree not initiated", findCommonAncestor(t,p,q), "Tree not initiated");
+	}
+	
+	@Test
+	public static void testEmptyTree() {
+		Tree t = new Tree();
+		int p=5, q=14;
+	    assertEquals("Should return: Empty tree", findCommonAncestor(t,p,q), "Empty tree");
+	}
+	
+	@Test
+	public static void testElementsNotPresent() {
 		Tree t = new Tree();
 		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);
-		t.printTree();
+		t.populateTree(data);	
+		System.out.println(t.toString());
 		
-		findCommonAncestor(t,5,14);
+		int p=8, q=14;
+		System.out.println(findCommonAncestor(t,p,q));
+	    assertEquals("Either "+p+" or "+q+" is not present in the tree", findCommonAncestor(t,p,q), "Either "+p+" or "+q+" is not present");
 	}
+	
+	@Test
+	public static void testSamePQ() {
+		Tree t = new Tree();
+		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+		t.populateTree(data);	
+		
+		int p=3, q=3;
+		System.out.println(findCommonAncestor(t,p,q));
+	    assertEquals("p=q=lowestCommonAncestor", findCommonAncestor(t,p,q), "Lowest Common Ancestor of "+p+" and "+q+" is "+3);
+	}
+	
+	@Test
+	public static void testP_ancestorOf_Q() {
+		Tree t = new Tree();
+		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+		t.populateTree(data);	
+		
+		int p=16, q=3;
+		System.out.println(findCommonAncestor(t,p,q));
+	    assertEquals("p=q=lowestCommonAncestor", findCommonAncestor(t,p,q), "Lowest Common Ancestor of "+p+" and "+q+" is "+16);
+	}
+	
+	@Test
+	public static void testQ_ancestorOf_P() {
+		Tree t = new Tree();
+		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+		t.populateTree(data);	
+		
+		int p=5, q=9;
+		System.out.println(findCommonAncestor(t,p,q));
+	    assertEquals("p=q=lowestCommonAncestor", findCommonAncestor(t,p,q), "Lowest Common Ancestor of "+p+" and "+q+" is "+9);
+	}
+	
+	@Test
+	public static void testNonPQ_CommonAncestor() {
+		Tree t = new Tree();
+		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+		t.populateTree(data);	
+		
+		int p=1, q=19;
+		System.out.println(findCommonAncestor(t,p,q));
+	    assertEquals("p=q=lowestCommonAncestor", findCommonAncestor(t,p,q), "Lowest Common Ancestor of "+p+" and "+q+" is "+16);
+	}
+
 }
