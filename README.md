@@ -1,6 +1,6 @@
 # CodeU_Assignment2
 Please view branch "review" for reviewing my code.  
-Assumption: No duplicate elements are present in the binary tree
+Assumption: No duplicate elements are present in the binary tree.
 
 Assignment 2 has two questions:
 ## Q1
