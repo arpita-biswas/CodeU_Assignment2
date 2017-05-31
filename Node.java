@@ -26,4 +26,30 @@ public class Node<T>{
 	T getData(){
 		return this.data;
 	}	
+	
+	@Override
+	public String toString(){
+		StringBuilder str = new StringBuilder();
+		if(this.data == null){
+			return "null";			
+		}
+		else{
+			str.append("Node: "+this.data+" ");
+			if(this.left == null){
+				str.append("Left: null ");
+			}
+			else{
+				str.append("Left: "+this.left.data+" ");
+			}
+			if(this.right == null){
+				str.append("Right: null ");
+			}
+			else{
+				str.append("Right: "+this.right.data+" ");
+			}
+			str.append("\n");
+			return str.toString();
+		}
+	}
+	
 }
