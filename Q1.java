@@ -1,4 +1,5 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import java.util.HashMap;
 import org.junit.Test;
 
 /** Assignment 2 Question 1: Print all ancestors of a node in a binary tree
@@ -27,6 +28,17 @@ public class Q1 {
 		}
 		return str.toString();
 	}
+	
+	/** allAncestorHelper() returns true if the given number "num" is found in the binary tree "t"
+	 * otherwise returns false.
+	 * It also sets "str" (input parameter) to be a comma separated list of 
+	 * ancestors of the given number "num" in a binary tree "t" (bottom-up order).
+	 * 
+	 * @param root
+	 * @param num
+	 * @param str
+	 * @return
+	 */
 	
 	static boolean allAncestorHelper(Node<Integer> root, int num, StringBuilder str){
 		if(root == null){
@@ -74,59 +86,112 @@ public class Q1 {
 	@Test
 	public static void testElementNotPresent() {
 		Tree t = new Tree();
-		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);	
-		System.out.println(t.toString());
+		//int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+		//t.populateTree(data);
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, 16);
+		map.put(1, 9);
+		map.put(2, 18);
+		map.put(3, 3);
+		map.put(4, 14);
+		map.put(6, 19);
+		map.put(7, 1);
+		map.put(8, 5);
+		t.populateTree(map);	
+		//System.out.println(t.toString());
 		
 		int num=8;
-		System.out.println(allAncestors(t, num));
+		//System.out.println(allAncestors(t, num));
 	    assertEquals("The number is not present in the tree", allAncestors(t, num), num+" not found");
 	}
 
 	@Test
 	public static void testAncestorsOfRoot() {
 		Tree t = new Tree();
-		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);	
+//		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+//		t.populateTree(data);	
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, 16);
+		map.put(1, 9);
+		map.put(2, 18);
+		map.put(3, 3);
+		map.put(4, 14);
+		map.put(6, 19);
+		map.put(7, 1);
+		map.put(8, 5);
+		t.populateTree(map);
 		
 		int num=16;
-		System.out.println(allAncestors(t, num));
+		//System.out.println(allAncestors(t, num));
 	    assertEquals("No ancestors of root", allAncestors(t, num), "");
 	}
 	
 	@Test
 	public static void testAncestorsOfLeftChildOfRoot() {
 		Tree t = new Tree();
-		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);	
+//		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+//		t.populateTree(data);	
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, 16);
+		map.put(1, 9);
+		map.put(2, 18);
+		map.put(3, 3);
+		map.put(4, 14);
+		map.put(6, 19);
+		map.put(7, 1);
+		map.put(8, 5);
+		t.populateTree(map);
 		
 		int num=9;
-		System.out.print("The ancestors of "+num+" are (bottom-up order): ");
-		System.out.println(allAncestors(t, num));
+		//System.out.print("The ancestors of "+num+" are (bottom-up order): ");
+		//System.out.println(allAncestors(t, num));
 	    assertEquals("Root is the only ancestor", allAncestors(t, num), t.root.data+", ");
 	}
 	
 	@Test
 	public static void testAncestorsOfRightChildOfRoot() {
 		Tree t = new Tree();
-		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);	
+//		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+//		t.populateTree(data);	
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, 16);
+		map.put(1, 9);
+		map.put(2, 18);
+		map.put(3, 3);
+		map.put(4, 14);
+		map.put(6, 19);
+		map.put(7, 1);
+		map.put(8, 5);
+		t.populateTree(map);
 		
 		int num=18;
-		System.out.print("The ancestors of "+num+" are (bottom-up order): ");
-		System.out.println(allAncestors(t, num));
+		//System.out.print("The ancestors of "+num+" are (bottom-up order): ");
+		//System.out.println(allAncestors(t, num));
 	    assertEquals("Root is the only ancestor", allAncestors(t, num), t.root.data+", ");
 	}
 	
 	@Test
 	public static void testAncestorsOfLeafNode() {
 		Tree t = new Tree();
-		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);	
+//		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+//		t.populateTree(data);
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, 16);
+		map.put(1, 9);
+		map.put(2, 18);
+		map.put(3, 3);
+		map.put(4, 14);
+		map.put(6, 19);
+		map.put(7, 1);
+		map.put(8, 5);
+		t.populateTree(map);
 		
 		int num=5;
-		System.out.print("The ancestors of "+num+" are (bottom-up order): ");
-		System.out.println(allAncestors(t, num));
+		//System.out.print("The ancestors of "+num+" are (bottom-up order): ");
+		//System.out.println(allAncestors(t, num));
 	    assertEquals("Should return all 3 ancestors", allAncestors(t, num), "3, 9, 16, ");
 	}
 }
