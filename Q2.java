@@ -2,7 +2,7 @@
  */
 
 import static org.junit.Assert.assertEquals;
-
+import java.util.HashMap;
 import org.junit.Test;
 
 /** An object of Result class contains
@@ -52,6 +52,15 @@ public class Q2 {
 		}
 	}
 	
+	/** commonAncestorHelper() returns an object of a Result class.
+	 *  if the "isAncestor" field of the object is true, then "potentialAncestor" contains the least common ancestor
+	 *  otherwise, no common ancestor of p and q was found in the subtree rooted at "root"
+	 * 
+	 * @param root
+	 * @param p
+	 * @param q
+	 * @return
+	 */
 	static Result commonAncestorHelper(Node<Integer> root, int p, int q){
 				
 		//if root is null, then return null node as potentialAncestor with isAncestor = false
@@ -60,27 +69,23 @@ public class Q2 {
 		}
 		//System.out.println("Node: "+root.data);
 		
-		//Check if root contains p
-		if(root.data == p){//if root contains p, then search for q in the subtree
-			if(find(root, q)){//if q is found in the subtree, then return root with isAncestor = true
+		//Check if root = p = q
+		if(root.data == p && root.data == q){
+			//If root = p = q, then return root with isAncestor = true
+			return new Result (root, true);
+		}
+		
+		//Check is root is one of p or q
+		if(root.data == p ||root.data == q){//if root contains p or q, then search for the other
+			if((root.data == p && find(root, q)) || (root.data == q && find(root, p))){
+				//if root = p and if q is found in the subtree, then return root with isAncestor = true
+				//or, if root = q and if p is found in the subtree, then also return root with isAncestor = true
 				return new Result (root, true);
 			}
-			//if q is not found in the subtree, then return root as potentialAncestor
-			//with isAncestor = false, indicating that this node contains either p or q
 			return new Result (root, false);
 		}
 		
-		//Check if root contains q
-		if(root.data == q){//if root contains q, then search for q in the subtree			
-			if(find(root, p)){//if p is found in the subtree, then return root with isAncestor = true
-				return new Result (root, true);
-			}
-			//if p is not found in the subtree, then return root as potentialAncestor
-			//with isAncestor = false, indicating that this node contains either p or q
-			return new Result (root, false);
-		}
-		
-		//If root does not contain p or q, look at the left subtree for p or q
+		//If root does not contain p nor q, search the left subtree for p and/or q
 		Result leftRes = commonAncestorHelper(root.left, p, q);
 		
 		//Check whether left subtree has already found the common ancestor
@@ -153,23 +158,45 @@ public class Q2 {
 	@Test
 	public static void testElementsNotPresent() {
 		Tree t = new Tree();
-		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);	
-		System.out.println(t.toString());
+//		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+//		t.populateTree(data);	
+		//System.out.println(t.toString());
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, 16);
+		map.put(1, 9);
+		map.put(2, 18);
+		map.put(3, 3);
+		map.put(4, 14);
+		map.put(6, 19);
+		map.put(7, 1);
+		map.put(8, 5);
+		t.populateTree(map);
 		
 		int p=8, q=14;
-		System.out.println(findCommonAncestor(t,p,q));
+		//System.out.println(findCommonAncestor(t,p,q));
 	    assertEquals("Either "+p+" or "+q+" is not present in the tree", findCommonAncestor(t,p,q), "Either "+p+" or "+q+" is not present");
 	}
 	
 	@Test
 	public static void testSamePQ() {
 		Tree t = new Tree();
-		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);	
+//		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+//		t.populateTree(data);	
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, 16);
+		map.put(1, 9);
+		map.put(2, 18);
+		map.put(3, 3);
+		map.put(4, 14);
+		map.put(6, 19);
+		map.put(7, 1);
+		map.put(8, 5);
+		t.populateTree(map);
 		
 		int p=3, q=3;
-		System.out.println(findCommonAncestor(t,p,q));
+		//System.out.println(findCommonAncestor(t,p,q));
 	    assertEquals("p=q=lowestCommonAncestor", findCommonAncestor(t,p,q), "Lowest Common Ancestor of "+p+" and "+q+" is "+3);
 	}
 	
@@ -180,29 +207,51 @@ public class Q2 {
 		t.populateTree(data);	
 		
 		int p=16, q=3;
-		System.out.println(findCommonAncestor(t,p,q));
+		//System.out.println(findCommonAncestor(t,p,q));
 	    assertEquals("p=q=lowestCommonAncestor", findCommonAncestor(t,p,q), "Lowest Common Ancestor of "+p+" and "+q+" is "+16);
 	}
 	
 	@Test
 	public static void testQ_ancestorOf_P() {
 		Tree t = new Tree();
-		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);	
+//		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+//		t.populateTree(data);	
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, 16);
+		map.put(1, 9);
+		map.put(2, 18);
+		map.put(3, 3);
+		map.put(4, 14);
+		map.put(6, 19);
+		map.put(7, 1);
+		map.put(8, 5);
+		t.populateTree(map);
 		
 		int p=5, q=9;
-		System.out.println(findCommonAncestor(t,p,q));
+		//System.out.println(findCommonAncestor(t,p,q));
 	    assertEquals("p=q=lowestCommonAncestor", findCommonAncestor(t,p,q), "Lowest Common Ancestor of "+p+" and "+q+" is "+9);
 	}
 	
 	@Test
 	public static void testNonPQ_CommonAncestor() {
 		Tree t = new Tree();
-		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
-		t.populateTree(data);	
+//		int data[] = {16,9,18,3,14,Tree.NullNode,19,1,5};
+//		t.populateTree(data);	
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(0, 16);
+		map.put(1, 9);
+		map.put(2, 18);
+		map.put(3, 3);
+		map.put(4, 14);
+		map.put(6, 19);
+		map.put(7, 1);
+		map.put(8, 5);
+		t.populateTree(map);
 		
 		int p=1, q=19;
-		System.out.println(findCommonAncestor(t,p,q));
+		//System.out.println(findCommonAncestor(t,p,q));
 	    assertEquals("p=q=lowestCommonAncestor", findCommonAncestor(t,p,q), "Lowest Common Ancestor of "+p+" and "+q+" is "+16);
 	}
 
