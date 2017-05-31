@@ -1,3 +1,6 @@
+
+import java.util.HashMap;
+
 /**Implemented tree data structure
  * public data member: root
  * public method: poplulateTree(int [] data) creates tree from data array  
@@ -10,7 +13,7 @@ public class Tree{
 		this.root = null;
 	}
 	
-	/** populateTree(): Creates tree from data array
+	/** populateTree(data): Creates tree from data array
 	 * 
 	 * @param data
 	 * 
@@ -32,7 +35,6 @@ public class Tree{
 		int rightN = leftN + 1;
 		if(leftN >= data.length){
 			//System.out.println("Left of "+data[n]+" is not there and exceeds length");
-			root.left = null;
 			return;
 		}
 		else{
@@ -42,14 +44,9 @@ public class Tree{
 				root.left = left;
 				createTree(left, leftN, data);
 			}
-			else{
-				//System.out.println("Left of "+data[n]+" is not there");
-				root.left = null;
-			}
 		}
 		if(rightN >= data.length){
 			//System.out.println("Right of "+data[n]+" is not there and exceeds length");
-			root.right = null;
 			return;
 		}
 		else{
@@ -59,10 +56,43 @@ public class Tree{
 				root.right = right;
 				createTree(right, rightN, data);
 			}
-			else{
-				//System.out.println("Right of "+data[n]+" is not there");
-				root.right = null;
-			}
+		}		
+	}
+	
+	/** populateTree(map): Creates tree from HashMap<Integer, Integer> map
+	 * The "map" is expected to contain (key, value) pair of the form (index, data)
+	 * 
+	 * @param map
+	 * 
+	 * Assumption: key = 0 corresponds to root node of the tree
+	 * 
+	 * For each key i of "map", create a node of tree and, 
+	 * 		the value corresponding to key =(2*i + 1) of "map" is the left child
+	 * 		the value corresponding to key =(2*i + 2) of "map" is the right child
+	 */
+	public void populateTree(HashMap<Integer, Integer> map){
+		if(map == null || map.isEmpty()){
+			return;
+		}
+		this.root = new Node<Integer>(map.get(0));
+		//System.out.println("Root: "+this.root.data);
+		createTree(this.root, 0, map);				
+	}
+	
+	private void createTree(Node<Integer> root, int n, HashMap<Integer, Integer> map){
+		int leftN = 2*n + 1;
+		int rightN = leftN + 1;
+		if(map.containsKey(leftN)){	
+			Node<Integer> left = new Node<Integer>(map.get(leftN));
+			//System.out.println("Left of "+map.get(n)+" is "+map.get(leftN));
+			root.left = left;
+			createTree(left, leftN, map);			
+		}
+		if(map.containsKey(rightN)){		
+			Node<Integer> right = new Node<Integer>(map.get(rightN));
+			//System.out.println("Right of "+map.get(n)+" is "+map.get(rightN));
+			root.right = right;
+			createTree(right, rightN, map);
 		}		
 	}
 	
@@ -85,21 +115,7 @@ public class Tree{
 		if(root == null){
 			return str;
 		}
-		
-		str.append("Node: "+root.data+" ");
-		if(root.left != null){
-			str.append("Left: "+root.left.data+" ");
-		}
-		else{
-			str.append("Left: null ");
-		}
-		if(root.right !=null){
-			str.append("Right: "+root.right.data+" ");
-		}
-		else{
-			str.append("Right: null ");
-		}
-		str.append("\n");
+		str.append(root.toString());
 		str.append(print(root.left));
 		str.append(print(root.right));		
 		return str;
